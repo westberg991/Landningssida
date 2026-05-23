@@ -1,23 +1,518 @@
 <!DOCTYPE html>
-<html lang="sv">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kommer snart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-950 text-white min-h-screen flex items-center justify-center">
-    <div class="text-center px-6">
-      <h1 class="text-5xl font-bold mb-4">Något stort är på väg 🚀</h1>
-      <p class="text-gray-400 text-xl mb-8">Vi lanserar snart. Var först att få veta!</p>
-      <input
-        type="email"
-        placeholder="Din e-postadress"
-        class="px-4 py-3 rounded-lg text-gray-900 w-72 mr-2"
-      />
-      <button class="bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
-        Meddela mig
-      </button>
+<html lang="sv" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GKonsult — Maskintekniska Konsulttjänster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --bg:        #F5F2EE;
+      --bg2:       #EDEAE4;
+      --surface:   #FFFFFF;
+      --text:      #1A1814;
+      --muted:     #6B6560;
+      --accent:    #B5892A;
+      --accent2:   #2A4B5C;
+      --border:    rgba(26,24,20,0.12);
+      --shadow:    0 2px 24px rgba(26,24,20,0.08);
+    }
+    [data-theme="dark"] {
+      --bg:        #0F1117;
+      --bg2:       #161820;
+      --surface:   #1E2130;
+      --text:      #E8E4DC;
+      --muted:     #8A8680;
+      --accent:    #D4A84B;
+      --accent2:   #5B9BB5;
+      --border:    rgba(232,228,220,0.1);
+      --shadow:    0 2px 24px rgba(0,0,0,0.3);
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s, color 0.4s;
+      overflow-x: hidden;
+    }
+ 
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+ 
+    /* THEME TOGGLE */
+    .theme-toggle {
+      background: none; border: 1px solid var(--border);
+      border-radius: 50px; padding: 0.4rem 1rem;
+      cursor: pointer; font-size: 0.8rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--muted); letter-spacing: 0.04em;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+ 
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -20%; right: -10%;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%);
+      pointer-events: none;
+      transition: background 0.4s;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block;
+      width: 2rem; height: 1px;
+      background: var(--accent);
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 1.1rem; font-weight: 300;
+      line-height: 1.8; color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 3rem;
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 0.9rem 2rem;
+      border: none; border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-secondary {
+      color: var(--text); font-size: 0.875rem;
+      font-weight: 400; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: gap 0.2s;
+    }
+    .btn-secondary:hover { gap: 0.75rem; }
+ 
+    /* DIVIDER */
+    .section-divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+      margin: 0 3rem;
+      width: calc(100% - 6rem);
+    }
+ 
+    /* STATS */
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0;
+    }
+    .stat {
+      padding: 3rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 300;
+      color: var(--accent); line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 0.8rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+ 
+    /* SERVICES */
+    .section {
+      padding: 6rem 3rem;
+    }
+    .section-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .section-label {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-label::before {
+      content: ''; display: block;
+      width: 2rem; height: 1px; background: var(--accent);
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300; line-height: 1.1;
+      color: var(--text);
+    }
+ 
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      background: var(--bg);
+      padding: 2.5rem;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .service-card:hover { background: var(--surface); }
+    .service-card:hover::after { width: 100%; }
+    .service-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 300;
+      color: var(--border);
+      line-height: 1; margin-bottom: 1.5rem;
+      transition: color 0.3s;
+    }
+    .service-card:hover .service-number { color: var(--accent); opacity: 0.3; }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400;
+      color: var(--text); margin-bottom: 0.75rem;
+    }
+    .service-card p {
+      font-size: 0.9rem; line-height: 1.7;
+      color: var(--muted);
+    }
+ 
+    /* ABOUT */
+    .about {
+      padding: 6rem 3rem;
+      background: var(--bg2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      transition: background 0.4s;
+    }
+    .about-text p {
+      font-size: 1rem; line-height: 1.9;
+      color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .about-values {
+      display: flex; flex-direction: column; gap: 2rem;
+    }
+    .value-item {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+    }
+    .value-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border: 1px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 1rem;
+    }
+    .value-item h4 {
+      font-size: 0.9rem; font-weight: 500;
+      letter-spacing: 0.05em; margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+    .value-item p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+ 
+    /* CONTACT */
+    .contact {
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .contact-form {
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label {
+      font-size: 0.75rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .form-group input,
+    .form-group textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.875rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; color: var(--text);
+      transition: border-color 0.2s;
+      outline: none; resize: vertical;
+      border-radius: 0;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { min-height: 120px; }
+ 
+    /* FOOTER */
+    footer {
+      padding: 2.5rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 600;
+      letter-spacing: 0.08em; color: var(--text);
+    }
+    .footer-logo span { color: var(--accent); }
+ 
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+    .hero h1      { animation: fadeUp 0.6s 0.1s ease both; }
+    .hero p       { animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-cta     { animation: fadeUp 0.6s 0.3s ease both; }
+ 
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 7rem 1.5rem 3rem; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 2rem 1.5rem; }
+      .section { padding: 4rem 1.5rem; }
+      .about, .contact { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+ 
+  <nav>
+    <a href="#" class="nav-logo">G<span>K</span>onsult</a>
+    <div class="nav-links">
+      <a href="#tjanster">Tjänster</a>
+      <a href="#om">Om oss</a>
+      <a href="#kontakt">Kontakt</a>
     </div>
-  </body>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☾ Mörkt läge</button>
+  </nav>
+ 
+  <section class="hero">
+    <div class="hero-eyebrow">Maskintekniska Konsulttjänster</div>
+    <h1>Precision &amp;<br><em>Ingenjörskonst</em><br>i varje projekt</h1>
+    <p>GKonsult levererar expertis inom maskinteknik — från konstruktion och analys till optimering av komplexa tekniska system.</p>
+    <div class="hero-cta">
+      <a href="#kontakt" class="btn-primary">Kontakta oss</a>
+      <a href="#tjanster" class="btn-secondary">Våra tjänster →</a>
+    </div>
+  </section>
+ 
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">10+</div>
+      <div class="stat-label">Års erfarenhet</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">50+</div>
+      <div class="stat-label">Genomförda projekt</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Kundnöjdhet</div>
+    </div>
+  </div>
+ 
+  <section class="section" id="tjanster">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Vad vi erbjuder</div>
+        <h2 class="section-title">Våra<br>tjänster</h2>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-number">01</div>
+        <h3>Konstruktion &amp; Design</h3>
+        <p>Utveckling av maskinkomponenter och system med fokus på funktion, hållbarhet och tillverkningsbarhet.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">02</div>
+        <h3>Teknisk Analys</h3>
+        <p>FEM-analys, hållfastighetsberäkningar och simuleringar för att säkerställa att era konstruktioner håller måttet.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">03</div>
+        <h3>Projektledning</h3>
+        <p>Ledning av tekniska projekt från kravspecifikation till leverans — i tid och inom budget.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">04</div>
+        <h3>Optimering</h3>
+        <p>Identifiering och eliminering av ineffektiviteter i befintliga system och processer för ökad prestanda.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="about" id="om">
+    <div class="about-text">
+      <div class="section-label">Om GKonsult</div>
+      <h2 class="section-title" style="margin-bottom:2rem">Teknisk expertis<br>du kan lita på</h2>
+      <p>GKonsult grundades med en tydlig vision — att leverera maskinteknisk kompetens av högsta klass till företag som kräver precisa och hållbara lösningar.</p>
+      <p>Vi kombinerar djup teknisk kunskap med ett affärsmässigt perspektiv, vilket gör oss till en partner som förstår både utmaningarna i verkstadsgolvet och styrelserummet.</p>
+      <a href="#kontakt" class="btn-primary" style="margin-top:1rem">Starta ett samarbete</a>
+    </div>
+    <div class="about-values">
+      <div class="value-item">
+        <div class="value-icon">⚙</div>
+        <div>
+          <h4>Teknisk precision</h4>
+          <p>Varje lösning bygger på gedigen ingenjörsmässig grund och noggrant verifierade beräkningar.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">◈</div>
+        <div>
+          <h4>Kvalitet i fokus</h4>
+          <p>Vi levererar inte förrän vi är övertygade om att resultatet uppfyller de högsta kraven.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">→</div>
+        <div>
+          <h4>Tydlig kommunikation</h4>
+          <p>Komplex teknik förklaras på ett begripligt sätt — ni är alltid informerade om projektets status.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="section" id="kontakt">
+    <div class="contact">
+      <div>
+        <div class="section-label">Kom i kontakt</div>
+        <h2 class="section-title" style="margin-bottom:1.5rem">Låt oss diskutera<br>ert projekt</h2>
+        <p style="color:var(--muted);line-height:1.8;margin-bottom:2rem">Har ni ett tekniskt utmanade projekt eller vill ni veta mer om hur GKonsult kan hjälpa er? Fyll i formuläret så återkommer vi inom 24 timmar.</p>
+        <p style="font-size:0.85rem;color:var(--muted);letter-spacing:0.05em">
+          ✉ info@gkonsult.se
+        </p>
+      </div>
+      <div class="contact-form">
+        <div class="form-group">
+          <label>Namn</label>
+          <input type="text" placeholder="Ditt namn" />
+        </div>
+        <div class="form-group">
+          <label>E-post</label>
+          <input type="email" placeholder="din@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Företag</label>
+          <input type="text" placeholder="Företagsnamn" />
+        </div>
+        <div class="form-group">
+          <label>Meddelande</label>
+          <textarea placeholder="Berätta om ert projekt..."></textarea>
+        </div>
+        <button class="btn-primary" style="align-self:flex-start">Skicka förfrågan</button>
+      </div>
+    </div>
+  </section>
+ 
+  <footer>
+    <div class="footer-logo">G<span>K</span>onsult</div>
+    <p>© 2025 GKonsult. Maskintekniska konsulttjänster.</p>
+    <p style="font-size:0.75rem">gkonsult.se</p>
+  </footer>
+ 
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeBtn');
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        btn.textContent = '☾ Mörkt läge';
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        btn.textContent = '☀ Ljust läge';
+      }
+    }
+  </script>
+ 
+</body>
 </html>
