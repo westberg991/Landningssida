@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv" data-theme="light">
+<html lang="sv" data-theme="dark">
 
 <head>
   <!-- Google tag (gtag.js) -->
@@ -832,26 +832,27 @@
     function toggleTheme() {
       const html = document.documentElement;
       const btn = document.getElementById('themeBtn');
-
+      
       if (html.getAttribute('data-theme') === 'dark') {
         html.setAttribute('data-theme', 'light');
         btn.textContent = '☾ Mörkt läge';
-        localStorage.setItem('theme', 'light'); // Sparar valet i webbläsaren
+        localStorage.setItem('theme', 'light');
       } else {
         html.setAttribute('data-theme', 'dark');
         btn.textContent = '☀ Ljust läge';
-        localStorage.setItem('theme', 'dark');  // Sparar valet i webbläsaren
+        localStorage.setItem('theme', 'dark');
       }
     }
 
-    // Denna kod körs direkt när sidan laddas för att applicera rätt tema och knapptext
-    (function () {
-      const savedTheme = localStorage.getItem('theme') || 'light'; // Standard är 'light' om inget sparats
+    (function() {
+      // Nu är 'dark' standard om inget val sparats tidigare
+      const savedTheme = localStorage.getItem('theme') || 'dark'; 
       const btn = document.getElementById('themeBtn');
-
+      
       document.documentElement.setAttribute('data-theme', savedTheme);
-
+      
       if (btn) {
+        // Om det sparade/valda temat är mörkt, visa texten för att byta till ljust läge
         btn.textContent = savedTheme === 'dark' ? '☀ Ljust läge' : '☾ Mörkt läge';
       }
     })();
