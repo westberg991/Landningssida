@@ -163,14 +163,18 @@
     .hero::before {
       content: '';
       position: absolute;
-      top: -20%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
+      /* Centrerar cirkeln runt muspekarens koordinater (standard är 80% 20% om musen inte rörts) */
+      top: var(--mouse-y, 20%);
+      left: var(--mouse-x, 80%);
+      transform: translate(-50%, -50%);
+      width: 800px;
+      /* Lite större för en mjukare övergång */
+      height: 800px;
       border-radius: 50%;
-      background: radial-gradient(circle, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%);
+      background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
       pointer-events: none;
-      transition: background 0.4s;
+      transition: background 0.4s, top 0.1s ease-out, left 0.1s ease-out;
+      /* ease-out gör att den "flyter" efter musen mjukt */
     }
 
     .hero-eyebrow {
@@ -851,6 +855,24 @@
         btn.textContent = savedTheme === 'dark' ? '☀ Ljust läge' : '☾ Mörkt läge';
       }
     })();
+  </script>
+
+  <script>
+    const hero = document.querySelector('.hero');
+
+    // Vi lyssnar bara på musrörelser inuti "hero"-sektionen (startsidan)
+    hero.addEventListener('mousemove', (e) => {
+      // Hämta sektionens position på skärmen
+      const rect = hero.getBoundingClientRect();
+
+      // Räkna ut musens position i procent i förhållande till sektionen
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+      // Skicka in procenten som CSS-variabler till vår .hero
+      hero.style.setProperty('--mouse-x', `${x}%`);
+      hero.style.setProperty('--mouse-y', `${y}%`);
+    });
   </script>
 
 </body>
