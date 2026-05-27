@@ -30,7 +30,7 @@
     content="Professionella maskintekniska konsulttjänster inom konstruktion, analys och projektledning.">
   <meta property="og:url" content="https://gkonsult.se">
   <meta property="og:type" content="website">
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap"
@@ -633,7 +633,7 @@
       <a href="#om">Om oss</a>
       <a href="#kontakt">Kontakt</a>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☾ Mörkt läge</button>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn"></button>
   </nav>
 
   <section class="hero">
@@ -804,14 +804,29 @@
     function toggleTheme() {
       const html = document.documentElement;
       const btn = document.getElementById('themeBtn');
+
       if (html.getAttribute('data-theme') === 'dark') {
         html.setAttribute('data-theme', 'light');
         btn.textContent = '☾ Mörkt läge';
+        localStorage.setItem('theme', 'light'); // Sparar valet i webbläsaren
       } else {
         html.setAttribute('data-theme', 'dark');
         btn.textContent = '☀ Ljust läge';
+        localStorage.setItem('theme', 'dark');  // Sparar valet i webbläsaren
       }
     }
+
+    // Denna kod körs direkt när sidan laddas för att applicera rätt tema och knapptext
+    (function () {
+      const savedTheme = localStorage.getItem('theme') || 'light'; // Standard är 'light' om inget sparats
+      const btn = document.getElementById('themeBtn');
+
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      if (btn) {
+        btn.textContent = savedTheme === 'dark' ? '☀ Ljust läge' : '☾ Mörkt läge';
+      }
+    })();
   </script>
 
 </body>
